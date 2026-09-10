@@ -1,0 +1,366 @@
+_tech_challenge_fase_1_backlog_de_tasks
+
+# Tech Challenge Fase 1 — backlog de tasks
+
+Fonte: `POSTECH - Tech Challenge - Fase 1.pdf`
+Curso: Pós Tech — IA para Devs
+Peso: **90% da nota de todas as disciplinas da fase**
+Formato: grupo · entrega obrigatória
+
+Processo SDLC genérico (3 tamanhos): process_sdlc/_INDICE.md
+Binding deste challenge: process_sdlc/aplicacoes/tech_challenge_fase1.md (recomendado: medium)
+Playbooks operacionais: epics/_INDICE.md
+
+## O que o desafio pede
+
+Hospital universitário quer **triagem automática** de exames e documentos clínicos para apoiar o médico — não substituí-lo. Nesta fase a entrega mínima é **classificação tabular com Machine Learning** (doença sim/não). CNN em imagem é **EXTRA** (sobe nota se a parte obrigatória não fechar 100%).
+
+**Restrição clínica (enunciado):** o médico sempre tem a palavra final no diagnóstico. Nenhum artefato pode vender o modelo como diagnóstico autônomo.
+
+## Fora de escopo nesta fase
+
+- Prontuário eletrônico completo, fila de atendimento, login de hospital
+- LLM / RAG / GenAI (fases posteriores do curso)
+- Deploy em nuvem de produção, monitoramento clínico real
+- Usar dado real de paciente identificável (somente dataset **público**)
+
+---
+
+## Mapa requisito → task
+
+| Requisito do PDF | Task |
+|---|---|
+| Escolher dataset médico público e discutir o problema | T01 |
+| Carregar a base e explorar características | T03 |
+| Estatísticas descritivas + visualizações + discussão | T04 |
+| Limpeza (ausentes, inconsistentes) | T05 |
+| Pipeline de pré-processamento em Python; categóricas/numéricas | T06 |
+| Análise de correlação | T07 |
+| Duas ou mais técnicas de classificação | T09, T10 (+ T11 recomendado) |
+| Split claro treino / validação / teste | T08 |
+| Treino no conjunto de treinamento | T09–T11 |
+| Avaliação no teste: accuracy, recall, F1 + discussão da métrica | T12 |
+| Interpretação: feature importance e SHAP | T13, T14 |
+| Discussão crítica de uso prático + papel do médico | T15 |
+| EXTRA: diagnóstico por imagem com CNN | T16 |
+| Projeto Python estruturado; notebook ou scripts | T02 |
+| Repo Git + código-fonte + Dockerfile + README | T17 |
+| Dataset (ou link de download) | T18 |
+| Resultados (prints, gráficos, análises) | T20 |
+| Relatório técnico (pré-processamento, modelos, resultados) | T19 |
+| Vídeo ≤ 15 min (YouTube/Vimeo, público ou não listado) | T21 |
+
+---
+
+## Ordem de execução
+
+```
+T00 → T01 → T02 → T03 → T04 → T05 → T06 → T07 → T08
+                                              ↓
+                                    T09 / T10 / T11 (em paralelo depois do split)
+                                              ↓
+                                         T12 → T13 → T14 → T15
+                                              ↓
+                              T16 (EXTRA, em paralelo a T12–T15 se houver capacidade)
+                                              ↓
+                                    T17 + T18 + T20 → T19 → T21
+```
+
+Estimativa do caminho obrigatório: **~40 h**. EXTRA CNN: **+8–12 h**.
+
+---
+
+## Definição de pronto da fase (gate de entrega)
+
+- [ ] Repo Git com código rodando via `docker compose up` **ou** `docker build` + comando no README
+- [ ] Notebook/script reproduz o fluxo EDA → pipeline → treino → métricas → SHAP
+- [ ] Pelo menos **dois** classificadores, split treino/validação/teste **sem leakage**
+- [ ] Relatório PDF cobre as três seções pedidas (pré-processamento, modelos+porquê, resultados+interpretação)
+- [ ] Discussão deixa explícito: modelo é **apoio**, médico decide
+- [ ] Vídeo ≤ 15 min mostra o sistema rodando e o fluxo
+- [ ] Dataset versionado no repo **ou** link estável + hash/instruções de download
+
+---
+
+## Epic 0 — Descoberta e setup
+
+### T00 — Kickoff do challenge
+
+- **Tipo:** obrigatório · setup
+- **Depende de:** —
+- **Esforço:** 30 min
+- **Fazer:** alinhar grupo, prazo FIAP, peso 90%, dono de cada epic, dataset candidato.
+- **Aceite:**
+  - Grupo tem um dono por epic (dados, modelagem, relatório, vídeo, Docker).
+  - Prazo de entrega anotado.
+  - Decisão: EXTRA CNN entra ou fica de reserva se a nota obrigatória não fechar.
+
+### T01 — Escolher dataset e formular o problema clínico
+
+- **Tipo:** obrigatório · produto
+- **Depende de:** T00
+- **Esforço:** 2 h
+- **Candidatos do enunciado:**
+  - [Breast Cancer Wisconsin](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data/data) — maligno vs benigno (**recomendado:** tabular limpo, features clínicas, SHAP funciona bem)
+  - [Diabetes](https://www.kaggle.com/datasets/mathchi/diabetes-data-set/data)
+  - Outro público, desde que seja **tabela** + **classificação binária/multiclasse de diagnóstico**
+- **Aceite:**
+  - Dataset escolhido, licença/origem citadas, alvo (`y`) nomeado em linguagem clínica (ex.: “maligno vs benigno”).
+  - Parágrafo de ½ página: problema, por que ML, o que o médico faria sem o modelo, o que o modelo **não** substitui.
+  - Desbalanceamento de classes identificado (sim/não + proporção).
+
+### T02 — Scaffold do repositório Python
+
+- **Tipo:** obrigatório · engenharia
+- **Depende de:** T01
+- **Esforço:** 2 h
+- **Estrutura sugerida:**
+  ```
+  tech-challenge-fase1/
+    README.md
+    Dockerfile
+    requirements.txt
+    data/           # ou script de download
+    notebooks/01_eda.ipynb
+    notebooks/02_modelagem.ipynb
+    src/preprocess.py
+    src/train.py
+    src/evaluate.py
+    reports/figures/
+  ```
+- **Aceite:**
+  - `requirements.txt` pinado (pandas, scikit-learn, matplotlib, seaborn, shap, jupyter).
+  - README com “como rodar local” (mesmo que o Docker venha em T17).
+  - `.gitignore` (`.venv`, `__pycache__`, dados grandes se for o caso).
+
+---
+
+## Epic 1 — Exploração de dados
+
+### T03 — Carregar a base e mapear características
+
+- **Tipo:** obrigatório · dados
+- **Depende de:** T02
+- **Esforço:** 2 h
+- **Aceite:**
+  - Shape, dtypes, cardinalidade, amostra de linhas documentados no notebook.
+  - Dicionário de colunas (nome técnico → significado clínico, mesmo que curto).
+  - Identificador inútil (`id`) removido da modelagem, se existir.
+
+### T04 — Estatísticas descritivas e visualizações
+
+- **Tipo:** obrigatório · dados
+- **Depende de:** T03
+- **Esforço:** 3 h
+- **Aceite:**
+  - Describe numérico + distribuição do alvo.
+  - Pelo menos: histograma/box-plot das features mais relevantes, contagem de classes, (opcional) pairplot/subset.
+  - Texto discutindo o que as distribuições **implicam** para o diagnóstico (não só “o gráfico mostra X”).
+  - Figuras salvas em `reports/figures/`.
+
+---
+
+## Epic 2 — Pré-processamento
+
+### T05 — Limpeza (ausentes e inconsistentes)
+
+- **Tipo:** obrigatório · dados
+- **Depende de:** T04
+- **Esforço:** 2 h
+- **Aceite:**
+  - Estratégia de missing documentada (drop, imputação mediana/moda, indicador de ausência).
+  - Checagem de duplicatas, valores impossíveis (ex.: idade negativa, zeros sentinela no Pima Diabetes).
+  - Antes/depois do shape registrado.
+
+### T06 — Pipeline de pré-processamento (sklearn)
+
+- **Tipo:** obrigatório · ML
+- **Depende de:** T05
+- **Esforço:** 3 h
+- **Aceite:**
+  - `sklearn.pipeline.Pipeline` + `ColumnTransformer`: numéricas (scaler) e categóricas (OneHot/Ordinal) **fit só no treino**.
+  - Nenhuma transformação “na mão” no conjunto inteiro antes do split (isso é leakage — o split oficial é T08; aqui o pipeline deve estar **pronto para ser fitado depois do split**).
+  - Pipeline serializável (`joblib`).
+
+### T07 — Análise de correlação
+
+- **Tipo:** obrigatório · dados
+- **Depende de:** T05
+- **Esforço:** 2 h
+- **Aceite:**
+  - Heatmap (Pearson ou Spearman, justificado).
+  - Lista de pares altamente correlacionados e decisão: manter, dropar ou reduzir dimensionalidade.
+  - Discussão: correlação ≠ causalidade no contexto clínico.
+
+### T08 — Split treino / validação / teste
+
+- **Tipo:** obrigatório · ML
+- **Depende de:** T06
+- **Esforço:** 1 h
+- **Aceite:**
+  - Três conjuntos **disjuntos**. Proporção sugerida: 70/15/15 ou 60/20/20, **estratificado** pelo alvo.
+  - Seed fixada.
+  - Teste **intocado** até T12. Validação só para hiperparâmetros / comparação de modelos.
+  - Documento curto: por que essa proporção e por que estratificar.
+
+---
+
+## Epic 3 — Modelagem
+
+Critério do PDF: **duas ou mais** técnicas (ex.: regressão logística, árvore, KNN).
+
+### T09 — Modelo A — baseline linear (Regressão logística)
+
+- **Tipo:** obrigatório · ML
+- **Depende de:** T08
+- **Esforço:** 3 h
+- **Aceite:**
+  - Treinado **somente** no treino, via pipeline de T06.
+  - Hiperparâmetros ajustados na **validação** (ou `GridSearchCV` com CV no treino, sem o teste).
+  - Predições da validação salvas para comparação.
+
+### T10 — Modelo B — árvore / ensemble (Decision Tree ou Random Forest)
+
+- **Tipo:** obrigatório · ML
+- **Depende de:** T08
+- **Esforço:** 3 h
+- **Aceite:** iguais a T09, modelo não-linear, mesmo split e mesmas features.
+
+### T11 — Modelo C — KNN ou SVM (recomendado, não estritamente obrigatório)
+
+- **Tipo:** recomendado · ML
+- **Depende de:** T08
+- **Esforço:** 2 h
+- **Por quê:** o PDF lista KNN explicitamente; terceiro modelo fortalece a discussão “por que escolhemos X”.
+- **Aceite:** iguais a T09.
+
+---
+
+## Epic 4 — Avaliação, interpretação e ética clínica
+
+### T12 — Avaliação no teste e escolha da métrica
+
+- **Tipo:** obrigatório · ML
+- **Depende de:** T09, T10
+- **Esforço:** 3 h
+- **Aceite:**
+  - No **teste**: accuracy, recall (sensibilidade), precision, F1, matriz de confusão. AUC-ROC é plus (aparece na disciplina).
+  - Tabela comparando os modelos.
+  - Parágrafo obrigatório: **qual métrica manda neste problema e por quê**.
+    - Ex. câncer: falso negativo (recall baixo) é mais grave que falso positivo.
+    - Accuracy sozinha é insuficiente se a classe for desbalanceada.
+  - Modelo “vencedor” escolhido com base na validação, métricas de teste reportadas **uma vez** (sem retreinar olhando o teste).
+
+### T13 — Feature importance
+
+- **Tipo:** obrigatório · interpretação
+- **Depende de:** T12
+- **Esforço:** 2 h
+- **Aceite:**
+  - Importância do modelo vencedor (coeficientes padronizados **ou** `feature_importances_`).
+  - Gráfico + texto ligando as top features ao significado clínico (sem afirmar causalidade).
+
+### T14 — SHAP
+
+- **Tipo:** obrigatório · interpretação
+- **Depende de:** T12
+- **Esforço:** 3 h
+- **Aceite:**
+  - `summary plot` (impacto global) + pelo menos 1 `waterfall`/`force` de um caso.
+  - Explicação em linguagem de médico: “esta amostra foi classificada X porque…”.
+  - Limitação do SHAP citada (explicação do modelo, não da biologia).
+
+### T15 — Discussão crítica de uso na prática
+
+- **Tipo:** obrigatório · produto/ética
+- **Depende de:** T12, T13, T14
+- **Esforço:** 2 h
+- **Aceite (checklist do enunciado):**
+  - O modelo **pode** ser usado na prática? Em qual papel (triagem, segunda leitura, priorização de fila)?
+  - O que quebra: drift, população diferente do dataset, desbalanceamento, viés.
+  - Frase explícita: **o médico tem a palavra final**.
+  - LGPD: dataset público, sem PII real; se fosse hospital, dado de saúde é sensível.
+
+---
+
+## Epic 5 — EXTRA (sobe nota)
+
+### T16 — Diagnóstico por imagem com CNN
+
+- **Tipo:** extra
+- **Depende de:** T02 (pode andar em paralelo a T09–T15)
+- **Esforço:** 8–12 h
+- **Candidatos do enunciado:**
+  - [Chest X-Ray Pneumonia](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia)
+  - [CBIS-DDSM Breast Cancer](https://www.kaggle.com/datasets/awsaf49/cbis-ddsm-breast-cancer-image-dataset/data)
+- **Aceite mínimo se for fazer:**
+  - Split treino/val/teste (o dataset de pneumonia já vem separado — respeitar).
+  - CNN (do zero **ou** transfer learning); accuracy/recall/F1 no teste.
+  - Overfitting discutido (treino vs val).
+  - Não substitui T01–T15: o tabular continua sendo a entrega principal.
+
+---
+
+## Epic 6 — Entregáveis FIAP
+
+O PDF pede **um arquivo PDF** contendo os itens abaixo + **um vídeo**.
+
+### T17 — Dockerfile + README de execução
+
+- **Tipo:** obrigatório · entrega
+- **Depende de:** T12 (código estável)
+- **Esforço:** 3 h
+- **Aceite:**
+  - `Dockerfile` que instala deps e permite rodar o notebook **ou** `python src/train.py`.
+  - README: pré-requisitos, build, run, onde estão métricas e figuras.
+  - Link do repositório Git no PDF final.
+
+### T18 — Dataset no repo ou link de download
+
+- **Tipo:** obrigatório · entrega
+- **Depende de:** T01
+- **Esforço:** 30 min
+- **Aceite:**
+  - Arquivo no repo **ou** URL + comando de download + checksum/nome do arquivo.
+  - Licença/citação da fonte no README.
+
+### T19 — Relatório técnico (PDF)
+
+- **Tipo:** obrigatório · entrega
+- **Depende de:** T15, T17, T18, T20
+- **Esforço:** 6 h
+- **Seções mínimas (PDF):**
+  1. Link do Git
+  2. Estratégias de pré-processamento
+  3. Modelos usados e **por quê**
+  4. Resultados e interpretação (métricas, importance, SHAP)
+  5. Uso prático + limite clínico
+  6. (Se T16) capítulo EXTRA
+- **Aceite:** PDF único, citando figuras de T20; sem código dump interminável (código vive no Git).
+
+### T20 — Resultados visuais no repositório
+
+- **Tipo:** obrigatório · entrega
+- **Depende de:** T04, T07, T12, T13, T14
+- **Esforço:** 2 h
+- **Aceite:**
+  - Pasta `reports/figures/` com EDA, correlação, matrizes de confusão, importance, SHAP.
+  - Prints ou exportações que o PDF e o vídeo consigam reusar.
+
+### T21 — Vídeo de demonstração (≤ 15 min)
+
+- **Tipo:** obrigatório · entrega
+- **Depende de:** T17, T19
+- **Esforço:** 4 h
+- **Aceite:**
+  - Upload YouTube ou Vimeo (público ou não listado).
+  - Mostra o sistema **em execução** (Docker ou notebook rodando).
+  - Explica o fluxo: dados → pipeline → modelo → métrica → interpretação → “médico decide”.
+  - Link no PDF. Duração ≤ 15 min.
+
+---
+
+## Prompt de execução (por task)
+
+Ao implementar uma task, o critério de aceite acima é a Definition of Done. Não pular T08 antes de treinar. Não olhar o teste antes de T12. Não tratar T16 como substituto da classificação tabular.
+
