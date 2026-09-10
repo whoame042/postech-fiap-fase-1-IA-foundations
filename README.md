@@ -1,5 +1,6 @@
 # Tech Challenge Fase 1 — backlog de tasks
 
+Fonte: `POSTECH - Tech Challenge - Fase 1.pdf`
 Curso: Pós Tech — IA para Devs
 Peso: **90% da nota de todas as disciplinas da fase**
 Formato: grupo · entrega obrigatória
