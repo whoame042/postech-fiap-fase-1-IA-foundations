@@ -8,9 +8,7 @@ Classificação tabular (benigno × maligno) no dataset público **Breast Cancer
 |---|---|
 | `data/data.csv` | Dataset Breast Cancer Wisconsin (público) |
 | `AnaliseExploratoria.ipynb` | EDA, limpeza, pipeline de pré-processamento, split e modelos (T03–T11) |
-| `notebooks/02_avaliacao.ipynb` | Avaliação no teste: accuracy, recall e F1 (T12) |
-| `notebooks/03_interpretabilidade.ipynb` | Feature importance e SHAP (T13, T14) |
-| `notebooks/04_correlacao_e_discussao_clinica.ipynb` | Correlação, validação cruzada e discussão clínica (T07, T15) |
+| `notebooks/02_modelagem_e_interpretacao.ipynb` | Correlação, avaliação no teste, validação cruzada, importância/SHAP e discussão clínica (T07, T12–T15) |
 | `reports/figures/` | Gráficos gerados pelos notebooks |
 | `requirements.txt` | Dependências com versões fixas |
 | `Dockerfile` | Ambiente reproduzível |
@@ -28,7 +26,7 @@ pip install -r requirements.txt
 jupyter lab
 ```
 
-Abra os notebooks na ordem acima. Todos usam `random_state=42` e são reproduzíveis.
+Abra os notebooks na ordem acima (primeiro `AnaliseExploratoria.ipynb`, depois o `02`). Todos usam `random_state=42` e são reproduzíveis.
 
 ### Com Docker
 
@@ -53,7 +51,7 @@ Classe positiva: **maligno**. O recall dela é a métrica principal, pois um fal
 | Random Forest | 0,965 | 0,906 | 1,000 | 0,951 |
 | KNN | 0,953 | 0,906 | 0,967 | 0,935 |
 
-Com poucos casos malignos no teste, as diferenças entre modelos não são conclusivas; a validação cruzada e as limitações estão em `notebooks/04_correlacao_e_discussao_clinica.ipynb`.
+Com poucos casos malignos no teste, as diferenças entre modelos não são conclusivas; a validação cruzada e as limitações estão em `notebooks/02_modelagem_e_interpretacao.ipynb`.
 
 ---
 
