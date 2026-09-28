@@ -1,0 +1,19 @@
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Python / Jupyter
+__pycache__/
+.ipynb_checkpoints/
+
+# Dataset (grande: baixar do Kaggle, ver README)
+data/*
+!data/README.md
+
+# Pesos treinados (gerados pelo treino)
+models/*.pt
+models/*.pth
+
+# macOS
+.DS_Store

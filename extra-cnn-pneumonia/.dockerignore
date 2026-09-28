@@ -1,0 +1,12 @@
+.venv/
+venv/
+env/
+__pycache__/
+.ipynb_checkpoints/
+data/
+models/*.pt
+models/*.pth
+reports/figures/*.png
+.git/
+.gitignore
+.DS_Store

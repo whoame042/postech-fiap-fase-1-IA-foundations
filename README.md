@@ -11,7 +11,7 @@ Playbooks operacionais: epics/_INDICE.md
 
 ## O que o desafio pede
 
-Hospital universitário quer **triagem automática** de exames e documentos clínicos para apoiar o médico — não substituí-lo. Nesta fase a entrega mínima é **classificação tabular com Machine Learning** (doença sim/não). CNN em imagem é **EXTRA** (sobe nota se a parte obrigatória não fechar 100%).
+Hospital universitário quer **triagem automática** de exames e documentos clínicos para apoiar o médico — não substituí-lo. Nesta fase a entrega mínima é **classificação tabular com Machine Learning** (doença sim/não). CNN em imagem é **EXTRA** (sobe nota se a parte obrigatória não fechar 100%) — ver [`extra-cnn-pneumonia/`](extra-cnn-pneumonia/).
 
 **Restrição clínica (enunciado):** o médico sempre tem a palavra final no diagnóstico. Nenhum artefato pode vender o modelo como diagnóstico autônomo.
 
