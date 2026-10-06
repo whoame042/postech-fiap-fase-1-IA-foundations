@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=60"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "triagem-mama"
+version = "0.1.0"
+description = "Tech Challenge Fase 1 (POSTECH FIAP): apoio à triagem de câncer de mama com Machine Learning"
+requires-python = ">=3.12"
+# As dependências ficam fixadas em requirements.txt (que também instala este pacote).
+
+[tool.setuptools.packages.find]
+where = ["src"]

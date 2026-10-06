@@ -1,7 +1,14 @@
-
 # Ambientes virtuais
 .venv/
 venv/
 env/
 ENV/
+
+#python
+__pycache__/
+*.egg-info/
+
+#jupyter
+.ipynb_checkpoints/
+
 .github
