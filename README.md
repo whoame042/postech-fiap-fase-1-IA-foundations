@@ -1,23 +1,50 @@
-# Tech Challenge Fase 1 — backlog de tasks
+# Tech Challenge Fase 1 — triagem tabular de câncer de mama
 
-Fonte: `POSTECH - Tech Challenge - Fase 1.pdf`
-Curso: Pós Tech — IA para Devs
-Peso: **90% da nota de todas as disciplinas da fase**
-Formato: grupo · entrega obrigatória
+Pós Tech FIAP — IA para Devs. Peso: **90% da nota** da fase.
 
-Processo SDLC genérico (3 tamanhos): process_sdlc/_INDICE.md
-Binding deste challenge: process_sdlc/aplicacoes/tech_challenge_fase1.md (recomendado: medium)
-Playbooks operacionais: epics/_INDICE.md
+Hospital universitário quer **triagem automática** de exames clínicos para apoiar o médico. Entrega mínima: classificação tabular **maligno vs benigno** (Breast Cancer Wisconsin). CNN em imagem é **EXTRA** (`extra-cnn-pneumonia/`).
 
-## O que o desafio pede
+**O modelo estima P(maligno | features do exame). Não emite diagnóstico. O médico tem a palavra final.**
 
-Hospital universitário quer **triagem automática** de exames e documentos clínicos para apoiar o médico — não substituí-lo. Nesta fase a entrega mínima é **classificação tabular com Machine Learning** (doença sim/não). CNN em imagem é **EXTRA** (sobe nota se a parte obrigatória não fechar 100%) — ver [`extra-cnn-pneumonia/`](extra-cnn-pneumonia/).
+Detalhe clínico, origem, licença e desbalanceamento: [docs/problema_clinico.md](docs/problema_clinico.md).  
+Kickoff (donos, EXTRA, prazo): [docs/kickoff.md](docs/kickoff.md).  
+Backlog por épico: [docs/_tech_challenge_fase_1_backlog_de_tasks.md](docs/_tech_challenge_fase_1_backlog_de_tasks.md).
 
-**Restrição clínica (enunciado):** o médico sempre tem a palavra final no diagnóstico. Nenhum artefato pode vender o modelo como diagnóstico autônomo.
+## Como rodar local
+
+Python 3.11+ recomendado. Docker fica na T17.
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install --upgrade pip
+pip install -r requirements.txt
+python -c "import sklearn, pandas, shap"
+jupyter notebook notebooks/01_eda.ipynb
+```
+
+Dataset tabular: `data/data.csv` (já no repo).
+
+## Estrutura
+
+```
+.
+  README.md
+  requirements.txt
+  data/data.csv
+  notebooks/01_eda.ipynb
+  notebooks/02_modelagem.ipynb
+  src/preprocess.py
+  src/train.py
+  src/evaluate.py
+  reports/figures/
+  docs/
+  extra-cnn-pneumonia/    # EXTRA (T16)
+```
 
 ## Fora de escopo nesta fase
 
-- Prontuário eletrônico completo, fila de atendimento, login de hospital
-- LLM / RAG / GenAI (fases posteriores do curso)
-- Deploy em nuvem de produção, monitoramento clínico real
-- Usar dado real de paciente identificável (somente dataset **público**)
+- Prontuário eletrônico, fila de atendimento, login de hospital
+- LLM / RAG / GenAI
+- Deploy em nuvem de produção
+- Dado real de paciente identificável

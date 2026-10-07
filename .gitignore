@@ -1,6 +1,29 @@
-
 # Ambientes virtuais
 .venv/
 venv/
 env/
 ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.python-version
+.ipynb_checkpoints/
+.jupyter/
+
+# Modelos serializados grandes
+models/*.pkl
+models/*.joblib
+
+# Clone aninhado (não versionar)
+postech-fiap-fase-1-IA-foundations/
+
+# EXTRA: imagens de pneumonia (grandes)
+extra-cnn-pneumonia/data/chest_xray/
+extra-cnn-pneumonia/.venv/
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
