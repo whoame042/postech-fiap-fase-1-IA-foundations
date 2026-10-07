@@ -12,9 +12,11 @@ __pycache__/
 .ipynb_checkpoints/
 .jupyter/
 
-# Modelos serializados grandes
+# Modelos serializados grandes (T09+). T06/T08 versionam os joblib abaixo.
 models/*.pkl
-models/*.joblib
+models/pipeline_*.joblib
+!models/preprocess_unfitted.joblib
+!models/split.joblib
 
 # Clone aninhado (não versionar)
 postech-fiap-fase-1-IA-foundations/

@@ -5,6 +5,13 @@ Branch: `epic/E2_preprocessamento`
 Tasks: T05, T06, T07, T08  
 Anterior: [E1 Exploração de dados](E1_exploracao_de_dados.md) · Próximo: [E3 Modelagem](E3_modelagem.md)
 
+Artefatos desta branch:
+
+- T05: [limpeza.md](limpeza.md) · `src/preprocess.py` (`load_and_clean`)
+- T06: `ColumnTransformer` unfitted · `models/preprocess_unfitted.joblib`
+- T07: [correlacao.md](correlacao.md) · `reports/figures/02_correlacao.png`
+- T08: [split.md](split.md) · `models/split.joblib` · `src/train.py` (`make_split`)
+
 ---
 
 ## T05 — Limpeza (ausentes e inconsistentes)
