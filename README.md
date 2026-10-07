@@ -2,7 +2,7 @@
 
 Pós Tech FIAP — IA para Devs. Peso: **90% da nota** da fase.
 
-Hospital universitário quer **triagem automática** de exames clínicos para apoiar o médico. Entrega mínima: classificação tabular **maligno vs benigno** (Breast Cancer Wisconsin). CNN em imagem é **EXTRA** (`extra-cnn-pneumonia/`).
+Hospital universitário quer **triagem automática** de exames clínicos para apoiar o médico. Entrega mínima: classificação tabular **maligno vs benigno** (Breast Cancer Wisconsin). CNN em imagem é **EXTRA** (`extra-cnn-pneumonia/`) — **não substitui** T01–T15; ver [docs/cnn_extra.md](docs/cnn_extra.md).
 
 **O modelo estima P(maligno | features do exame). Não emite diagnóstico. O médico tem a palavra final.**
 

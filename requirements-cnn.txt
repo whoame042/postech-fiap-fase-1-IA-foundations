@@ -1,0 +1,4 @@
+# EXTRA T16 — não usar no venv/Docker do tabular (T02/T17).
+# Instale só em extra-cnn-pneumonia/:
+#   pip install -r extra-cnn-pneumonia/requirements.txt
+-r extra-cnn-pneumonia/requirements.txt

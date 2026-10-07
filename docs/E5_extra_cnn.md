@@ -7,6 +7,14 @@ Anterior: [E4 Avaliação, interpretação e ética](E4_avaliacao_interpretacao_
 
 Não trata T16 como substituto da classificação tabular.
 
+Artefatos desta branch:
+
+- T16: [cnn_dataset.md](cnn_dataset.md) · [cnn_extra.md](cnn_extra.md)
+- Figuras: `reports/figures/06_cnn_*.png`
+- Notebook: `notebooks/03_cnn.ipynb`
+- Código/treino: `extra-cnn-pneumonia/`
+- Deps isoladas: `requirements-cnn.txt`
+
 ---
 
 ## T16 — Diagnóstico por imagem com CNN

@@ -71,7 +71,7 @@ Depois abra `http://localhost:8888` no navegador (sem senha nem token — é só
 
 ## Status
 
-Em andamento.
+T16 (EXTRA) fechada no repo pai: `docs/cnn_extra.md`. Este diretório é o código/treino. O tabular na raiz continua sendo a entrega da banca.
 
 - [x] Dataset baixado e conferido
 - [x] Exploração dos dados (`notebooks/01_exploracao.ipynb`)
