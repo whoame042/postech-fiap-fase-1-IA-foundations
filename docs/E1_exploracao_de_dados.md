@@ -5,6 +5,11 @@ Branch: `epic/E1_exploracao_de_dados`
 Tasks: T03, T04  
 Anterior: [E0 Descoberta e setup](E0_descoberta_e_setup.md) · Próximo: [E2 Pré-processamento](E2_preprocessamento.md)
 
+Artefatos desta branch:
+
+- T03: [dicionario_colunas.md](dicionario_colunas.md) · `notebooks/01_eda.ipynb` (carga, dtypes, `id` fora de X)
+- T04: `reports/figures/01_*.png` · discussão clínica no mesmo notebook
+
 ---
 
 ## T03 — Carregar a base e mapear características
