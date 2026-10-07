@@ -7,6 +7,14 @@ Anterior: [E3 Modelagem](E3_modelagem.md) · Próximo: [E5 EXTRA CNN](E5_extra_c
 
 Não olhar o teste antes da T12.
 
+Artefatos desta branch:
+
+- T12: [metrica.md](metrica.md) · `reports/metrics_test.csv` · `reports/figures/03_*.png`
+- T13: [importance.md](importance.md) · `reports/figures/04_importance.png`
+- T14: [shap.md](shap.md) · `reports/figures/05_shap_*.png`
+- T15: [uso_pratico.md](uso_pratico.md)
+- Notebook: `notebooks/03_avaliacao.ipynb`
+
 ---
 
 ## T12 — Avaliação no teste e escolha da métrica
