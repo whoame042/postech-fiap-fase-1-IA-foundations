@@ -9,6 +9,13 @@ Critério do PDF: **duas ou mais** técnicas (ex.: regressão logística, árvor
 
 Não treinar antes da T08.
 
+Artefatos desta branch:
+
+- T09: `models/logreg.joblib` · `reports/metrics_val_logreg.json`
+- T10: `models/rf.joblib` · `reports/metrics_val_rf.json`
+- T11: `models/knn.joblib` · `reports/metrics_val_knn.json`
+- Protocolo: [modelagem.md](modelagem.md) · `notebooks/02_modelagem.ipynb`
+
 ---
 
 ## T09 — Modelo A — baseline linear (Regressão logística)

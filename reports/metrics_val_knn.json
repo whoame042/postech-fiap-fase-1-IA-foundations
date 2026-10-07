@@ -1,0 +1,15 @@
+{
+  "conjunto": "validacao",
+  "accuracy": 0.9651162790697675,
+  "precision": 0.967741935483871,
+  "recall": 0.9375,
+  "f1": 0.9523809523809523,
+  "modelo": "knn",
+  "scoring_grid": "recall",
+  "best_params": {
+    "clf__n_neighbors": 3,
+    "clf__weights": "uniform"
+  },
+  "best_cv_recall": 0.9052873563218391,
+  "n_features": 30
+}

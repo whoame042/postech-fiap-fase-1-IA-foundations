@@ -17,6 +17,9 @@ models/*.pkl
 models/pipeline_*.joblib
 !models/preprocess_unfitted.joblib
 !models/split.joblib
+!models/logreg.joblib
+!models/rf.joblib
+!models/knn.joblib
 
 # Clone aninhado (não versionar)
 postech-fiap-fase-1-IA-foundations/
