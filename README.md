@@ -119,5 +119,11 @@ As medidas que mais empurram para maligno são o **tamanho do núcleo e sua vari
 
 **Breast Cancer Wisconsin (Diagnostic)**: 569 exames, 30 medidas, diagnóstico benigno/maligno. Público, sem dados pessoais.
 
-- Origem: Wolberg, W., Mangasarian, O., Street, N., & Street, W. (1993). *Breast Cancer Wisconsin (Diagnostic)* [Dataset]. UCI Machine Learning Repository. <https://doi.org/10.24432/C5DW28>. Licença [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+- Origem: Wolberg, W., Mangasarian, O., Street, N., & Street, W. (1993). *Breast Cancer Wisconsin (Diagnostic)* [Dataset]. UCI Machine Learning Repository. <https://doi.org/10.24432/C5DW2B>. Licença [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 - Arquivo usado (`data/raw/data.csv`): versão do Kaggle, <https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data>.
+
+## Atividade extra: CNN em radiografias
+
+O repositório também contém uma atividade opcional de classificação de radiografias de tórax com CNN. As imagens (cerca de 1,2 GB) não são versionadas; o guia local explica o download do Kaggle, a validação dos arquivos e como iniciar/reproduzir o experimento com Docker Compose.
+
+Consulte [extra-cnn-pneumonia/README.md](extra-cnn-pneumonia/README.md) para os passos completos. A execução via Docker é CPU-only e pode levar bastante tempo para treinar os modelos.
