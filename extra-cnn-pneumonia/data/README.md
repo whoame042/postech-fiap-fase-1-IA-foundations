@@ -1,6 +1,6 @@
 # Dataset
 
-O dataset **não é versionado** (cerca de 1,2 GB). Baixe e extraia aqui, conforme o README da raiz.
+O dataset **não é versionado** (cerca de 1,2 GB). Baixe e extraia aqui, conforme o [guia da atividade](../README.md).
 
 Estrutura esperada:
 

@@ -1,85 +1,125 @@
-# Tech Challenge Fase 1 — EXTRA: CNN em radiografias de tórax
+# Atividade extra: CNN em radiografias de tórax
 
-Parte **EXTRA** (visão computacional) do Tech Challenge Fase 1 (FIAP Pós Tech, IA para Devs). Classifica radiografias de tórax em **NORMAL** ou **PNEUMONIA** com uma rede neural convolucional (CNN).
+Este diretório contém a atividade **opcional** de visão computacional do Tech Challenge Fase 1. O estudo compara uma CNN simples treinada do zero com uma ResNet18 pré-treinada para classificar radiografias como **NORMAL** ou **PNEUMONIA**.
 
-A entrega principal (classificação tabular de câncer de mama) está na raiz deste repositório.
+> Este é um experimento acadêmico de apoio à triagem. Não fornece diagnóstico e não substitui a avaliação de profissionais de saúde.
 
-**Este modelo é um exercício acadêmico de apoio à triagem. Ele não faz diagnóstico: o médico tem sempre a palavra final.**
+## Requisitos
 
-## Dataset
+- Docker Desktop atualizado, com Docker Compose v2 (`docker compose`).
+- Acesso à internet para baixar o dataset do Kaggle e, na primeira execução da ResNet18, os pesos pré-treinados do PyTorch.
+- Aproximadamente 1,2 GB para o dataset, além do espaço usado pela imagem Docker, checkpoints e resultados.
 
-[Chest X-Ray Pneumonia (Kaggle)](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia), cerca de 5.800 imagens. Não é versionado neste repositório por causa do tamanho.
+O fluxo documentado é CPU-only: não configura GPU NVIDIA/CUDA ou Apple MPS. A reprodução do treino dentro do container pode ser demorada.
 
-1. Entre no Kaggle com a sua conta, abra a página do dataset e clique em **Download**.
-2. Extraia o conteúdo em `data/`, de modo que fique `data/chest_xray/train`, `val` e `test`.
-3. Confira com:
+## 1. Baixar e preparar o dataset
 
-```bash
-python src/check_dataset.py
+As radiografias não são armazenadas neste repositório: o conjunto tem cerca de 1,2 GB. Baixe-o diretamente do [Chest X-Ray Images (Pneumonia) no Kaggle](https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia), usando sua conta e respeitando os termos da plataforma e do conjunto.
+
+Extraia a pasta `chest_xray` para `extra-cnn-pneumonia/data/`. A estrutura deve ficar assim, sem uma segunda pasta `chest_xray` aninhada:
+
+```text
+data/
+  chest_xray/
+    train/
+      NORMAL/
+      PNEUMONIA/
+    val/
+      NORMAL/
+      PNEUMONIA/
+    test/
+      NORMAL/
+      PNEUMONIA/
 ```
 
-## Como executar
+O validador espera a versão do Kaggle usada no estudo e confere as contagens:
 
-Requer Python 3.12 ou superior (testado com 3.13). Em Mac com Apple Silicon, o treino usa a GPU (MPS) automaticamente.
+| Conjunto | NORMAL | PNEUMONIA |
+|---|---:|---:|
+| `train` | 1.341 | 3.875 |
+| `val` | 8 | 8 |
+| `test` | 234 | 390 |
 
-```bash
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-python src/check_dataset.py
-jupyter lab
+As imagens são ignoradas pelo Git e pelo build do Docker; somente este README de dados fica versionado. O conjunto de validação original é pequeno; o pipeline separa uma validação maior, por paciente, a partir de `train`, e preserva `test` como a partição original.
+
+## 2. Validar dados e construir a imagem
+
+Se o terminal estiver na raiz do repositório, entre na pasta `extra-cnn-pneumonia`. Execute os comandos seguintes a partir dessa pasta:
+
+```powershell
+Set-Location .\extra-cnn-pneumonia
+docker compose build
+docker compose run --rm app python src/check_dataset.py
 ```
 
-### Executar com Docker
+O validador deve exibir as contagens esperadas e terminar com código de saída `0`. Se o dataset estiver ausente, incompleto ou em uma pasta diferente, o comando informa o problema e falha. Corrija a estrutura antes de iniciar o Jupyter.
 
-O Docker aqui serve para **explorar os notebooks já treinados** em qualquer máquina, sem instalar Python. Ele **não usa a GPU** (nem MPS do Mac, nem CUDA), então treinar do zero dentro do container é bem mais lento — para treinar, prefira a opção acima, com `.venv` direto na máquina.
+Os mesmos comandos funcionam em Bash a partir do diretório `extra-cnn-pneumonia`:
 
 ```bash
-docker build -t cnn-extra .
-
-# -v monta suas pastas locais dentro do container, para ele enxergar o
-# dataset e salvar/ler os pesos treinados
-docker run -p 8888:8888 \
-  -v "$(pwd)/data:/app/data" \
-  -v "$(pwd)/models:/app/models" \
-  -v "$(pwd)/reports:/app/reports" \
-  cnn-extra
+docker compose build
+docker compose run --rm app python src/check_dataset.py
 ```
 
-Depois abra `http://localhost:8888` no navegador (sem senha nem token — é só para uso local).
+## 3. Iniciar o JupyterLab
+
+```text
+docker compose up
+```
+
+Quando o servidor iniciar, copie do log a URL local com o token gerado pelo Jupyter, normalmente começando por `http://127.0.0.1:8888/lab?token=...`, e abra-a no navegador. O serviço é publicado somente em `127.0.0.1`; não remova esse limite nem exponha a porta à internet.
+
+Para encerrar, pressione `Ctrl+C` e execute:
+
+```text
+docker compose down
+```
+
+## 4. Explorar ou reproduzir o estudo
+
+No JupyterLab, abra e execute os notebooks nesta ordem:
+
+1. `01_exploracao.ipynb`
+2. `02_split_preprocessamento.ipynb`
+3. `03_cnn_simples.ipynb`
+4. `04_resnet18.ipynb`
+5. `05_avaliacao_final.ipynb`
+
+Ou, em outro terminal na pasta `extra-cnn-pneumonia`, execute a sequência completa dentro do container:
+
+```powershell
+docker compose run --rm app jupyter nbconvert --to notebook --execute --inplace `
+  notebooks/01_exploracao.ipynb `
+  notebooks/02_split_preprocessamento.ipynb `
+  notebooks/03_cnn_simples.ipynb `
+  notebooks/04_resnet18.ipynb `
+  notebooks/05_avaliacao_final.ipynb
+```
+
+Em Bash, troque os acentos graves de continuação por barras invertidas (`\`). O comando pode levar bastante tempo em CPU. Os notebooks são montados como volume para que suas saídas sejam gravadas no host; checkpoints `.pt` e figuras geradas também ficam nas pastas locais `models/` e `reports/`.
+
+O clone não inclui checkpoints treinados. Portanto, para executar `05_avaliacao_final.ipynb`, execute primeiro os notebooks de treino `03_cnn_simples.ipynb` e `04_resnet18.ipynb`, que criam os pesos necessários.
+
+## Solução de problemas
+
+- **Docker não conecta ao engine:** inicie o Docker Desktop e aguarde até o engine Linux estar pronto; depois repita o comando.
+- **Porta 8888 ocupada:** encerre o serviço que a utiliza ou altere a porta do host em `docker-compose.yml`, mantendo `8888` como porta do container (por exemplo, `127.0.0.1:8889:8888`).
+- **Validador informa contagens diferentes:** confira se o conteúdo está em `data/chest_xray/` e se baixou a versão do Kaggle indicada acima; uma versão diferente exige revisar as contagens esperadas no código e neste guia.
+- **Precisa recuperar o link/token do Jupyter:** consulte a saída do serviço com `docker compose logs app`.
+
+## Observação sobre os resultados
+
+O relatório do estudo compara CNN simples e ResNet18 usando resultados tanto de validação quanto de teste; a escolha da ResNet18 considera o equilíbrio observado nessa comparação. Assim, os valores do teste descrevem o experimento realizado e não devem ser interpretados como uma estimativa independente posterior à escolha do modelo. A reprodução registra o estudo como implementado, não como validação clínica.
 
 ## Estrutura
 
 | Caminho | Conteúdo |
 |---|---|
-| `data/` | Dataset (não versionado) |
-| `notebooks/` | Notebooks de exploração, treino e avaliação |
-| `src/` | Código reutilizável (verificação do dataset e, depois, treino) |
-| `models/` | Pesos treinados (não versionados) |
-| `reports/figures/` | Gráficos e resultados |
-| `reports/relatorio_tecnico.md` | Relatório técnico: pré-processamento, modelos e resultados |
-| `requirements.txt` | Dependências com versões fixas |
-| `Dockerfile` | Imagem para rodar os notebooks sem instalar Python |
-
-## Plano
-
-1. Explorar as imagens e as classes (a base é desbalanceada: há mais pneumonia que normal)
-2. Reorganizar o split: o `val` original tem só 16 imagens, então um novo split treino/validação é feito a partir do `train`, mantendo o `test` intocado
-3. CNN com transfer learning (ResNet18 pré-treinada) e comparação com uma CNN simples
-4. Avaliação no teste: accuracy, recall, precisão, F1 e matriz de confusão (o recall da pneumonia é a métrica principal)
-5. Discussão de overfitting (curvas de treino e validação) e do uso prático
-
-## Status
-
-Em andamento.
-
-- [x] Dataset baixado e conferido
-- [x] Exploração dos dados (`notebooks/01_exploracao.ipynb`)
-- [x] Novo split treino/validação por paciente e pipeline de pré-processamento (`notebooks/02_split_preprocessamento.ipynb`, código em `src/dados.py`)
-- [x] CNN simples (baseline) (`notebooks/03_cnn_simples.ipynb`)
-- [x] Transfer learning com ResNet18 (`notebooks/04_resnet18.ipynb`)
-- [x] Avaliação no teste e interpretação com Grad-CAM (`notebooks/05_avaliacao_final.ipynb`) — modelo final: ResNet18
-- [x] Dockerfile (`Dockerfile`, testado com `docker build` + `docker run`)
-- [x] Relatório técnico (`reports/relatorio_tecnico.md`)
-
-Falta apenas o vídeo de demonstração (até 15 min) para fechar os entregáveis pedidos no enunciado.
+| `data/` | Dataset baixado localmente; não versionado |
+| `notebooks/` | Exploração, preparação, treinamento e avaliação |
+| `src/` | Código de dados, modelos, treino, Grad-CAM e validação do dataset |
+| `models/` | Checkpoints de treinamento; não versionados |
+| `reports/figures/` | Figuras do estudo |
+| `reports/relatorio_tecnico.md` | Relatório técnico do experimento |
+| `Dockerfile` | Imagem com dependências e JupyterLab |
+| `docker-compose.yml` | Publicação local e montagem de volumes |
