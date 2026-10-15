@@ -1,4 +1,4 @@
-"""Carga, limpeza e divisão do ataset BCW (Diagnostic)."""
+"""Carga, limpeza e divisão do dataset BCW (Diagnostic)."""
 
 from dataclasses import dataclass
 

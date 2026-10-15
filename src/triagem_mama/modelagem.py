@@ -19,7 +19,7 @@ from sklearn.preprocessing import StandardScaler
 
 from triagem_mama.config import CLASSE_POSITIVA, CLASSES, SEED
 
-#F2: Combina recall e precisão dando ao recall o dobro do peso. Usamos F2 porque deixar passar um maligno (falso negativo) é pior que pedir ume xame a mais para um benigno (falso positivo);
+#F2: Combina recall e precisão dando ao recall o dobro do peso. Usamos F2 porque deixar passar um maligno (falso negativo) é pior que pedir um exame a mais para um benigno (falso positivo);
 scorer_f2 = make_scorer(fbeta_score, beta=2, pos_label=CLASSE_POSITIVA)
 scorer_recall = make_scorer(recall_score, pos_label=CLASSE_POSITIVA)
 
@@ -63,7 +63,7 @@ def criar_candidatos(colunas) -> dict:
     """
     colunas = list(colunas)
     grade_lr = {
-        #C controla a regrularização: valores menores = pesos mais contidos.
+        #C controla a regularização: valores menores = pesos mais contidos.
         "classificador__C": [0.01, 0.1, 1, 10, 100],
         # 'balanced' dá mais peso à classe minoritária (maligno) no treino.
         "classificador__class_weight": [None, "balanced"]

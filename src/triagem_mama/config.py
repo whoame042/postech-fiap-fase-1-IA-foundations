@@ -11,7 +11,7 @@ PASTA_FIGURAS = RAIZ_PROJETO / "reports" / "figures"
 PASTA_MODELOS = RAIZ_PROJETO / "models"
 CAMINHO_MODELO_FINAL = PASTA_MODELOS / "modelo_final.joblib"
 
-#seed única para tudo que tem aleatorieade (split, modelos, validadção cruzada.)
+#seed única para tudo que tem aleatoriedade (split, modelos, validação cruzada).
 
 SEED = 42
 
