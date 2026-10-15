@@ -59,10 +59,16 @@ Acesse a URL com o token exibida nos logs (`http://127.0.0.1:8888/lab?token=...`
 
 Para executar todos os notebooks dentro do container e receber as figuras e o modelo na sua máquina:
 
+No macOS ou Linux (bash/zsh):
+
 ```bash
-docker run --rm -v "$(pwd)/reports:/app/reports" -v "$(pwd)/models:/app/models" tc-fase1 \
-    jupyter nbconvert --to notebook --execute --inplace \
-    notebooks/01-eda.ipynb notebooks/02-preprocessamento-e-modelagem.ipynb notebooks/03-avaliacao-e-interpretacao.ipynb
+docker run --rm -v "$(pwd)/reports:/app/reports" -v "$(pwd)/models:/app/models" tc-fase1 jupyter nbconvert --to notebook --execute --inplace notebooks/01-eda.ipynb notebooks/02-preprocessamento-e-modelagem.ipynb notebooks/03-avaliacao-e-interpretacao.ipynb
+```
+
+No Windows (PowerShell):
+
+```powershell
+docker run --rm -v "${PWD}\reports:/app/reports" -v "${PWD}\models:/app/models" tc-fase1 jupyter nbconvert --to notebook --execute --inplace notebooks/01-eda.ipynb notebooks/02-preprocessamento-e-modelagem.ipynb notebooks/03-avaliacao-e-interpretacao.ipynb
 ```
 
 Tudo usa `random_state=42`, então os resultados são reprodutíveis.
@@ -71,7 +77,7 @@ Tudo usa `random_state=42`, então os resultados são reprodutíveis.
 
 1. **Divisão estratificada** em treino (397 exames, 70%), validação (86, 15%) e teste (86, 15%), com ~37% de malignos em cada.
 2. **Pipeline** (`ColumnTransformer` + `StandardScaler` + classificador), ajustado **só no treino** para evitar vazamento de dados.
-3. **Quatro candidatos:** Regressão Logística, Regressão Logística sem medidas redundantes (sem perímetro e área, que repetem o raio), Random Forest e KNN.
+3. **Quatro candidatos:** Regressão Logística, Regressão Logística sem medidas redundantes (sem perímetro e área, que repetem o raio), Random Forest e KNN. O notebook 02 também compara a Regressão Logística com subconjuntos de 15 e 10 medidas escolhidos por informação mútua; eles não foram escolhidos, e a comparação está na tabela de validação cruzada.
 4. **Ajuste de hiperparâmetros** com `GridSearchCV` (validação cruzada de 5 folds no treino) e **limiar de decisão** com `TunedThresholdClassifierCV`, ambos pelo critério **F2**.
 5. **Escolha na validação**, por regra definida antes de ver os resultados: maior recall, depois maior F2, depois maior F2 na validação cruzada.
 6. **Teste usado uma única vez**, só para o modelo escolhido.
